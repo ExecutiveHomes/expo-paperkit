@@ -1,53 +1,132 @@
 import ExpoModulesCore
-import ExpoUI
 
 public class ExpoPaperkitModule: Module {
   public func definition() -> ModuleDefinition {
     Name("ExpoPaperkit")
 
-    Events("onChange")
-
-    Constant("PI") {
-      Double.pi
-    }
-
-    Function("hello") {
-      return "Hello world! 👋"
-    }
-
-    AsyncFunction("setValueAsync") { (value: String) in
-      self.sendEvent("onChange", [
-        "value": value
-      ])
-    }
-
     View(ExpoPaperkitView.self) {
-      Events("onTap")
-    }
 
-    Class(ExpoPaperkitModuleSharedObject.self) {
-      Constructor { () -> ExpoPaperkitModuleSharedObject in
-        return ExpoPaperkitModuleSharedObject()
+      // MARK: - Props
+
+      Prop("showToolbar") { (view: ExpoPaperkitView, value: Bool) in
+        view.showToolbar = value
       }
 
-      Property("count") { (ref: ExpoPaperkitModuleSharedObject) -> Int in
-        return ref.count
+      Prop("readOnly") { (view: ExpoPaperkitView, value: Bool) in
+        view.readOnly = value
       }
-      .set { (ref: ExpoPaperkitModuleSharedObject, count: Int) in
-        ref.count = count
+
+      Prop("showPencilKit") { (view: ExpoPaperkitView, value: Bool) in
+        view.showPencilKit = value
       }
-    }
 
-    ExpoUIView(ExpoPaperkitSwiftUIView.self)
-
-    OnCreate {
-      ViewModifierRegistry.register("expoPaperkitSwiftUIModifier") { params, appContext, _ in
-        return try ExpoPaperkitSwiftUIModifier(from: params, appContext: appContext)
+      Prop("allowFingerDrawing") { (view: ExpoPaperkitView, value: Bool) in
+        view.allowFingerDrawing = value
       }
-    }
 
-    OnDestroy {
-      ViewModifierRegistry.unregister("expoPaperkitSwiftUIModifier")
+      Prop("initialData") { (view: ExpoPaperkitView, value: String?) in
+        if let base64 = value, !base64.isEmpty {
+          if #available(iOS 26.0, macOS 26.0, *) {
+            view.loadInitialData(base64)
+          }
+        }
+      }
+
+      Prop("backgroundImageUri") { (view: ExpoPaperkitView, value: String?) in
+        view.backgroundImageUri = value
+      }
+
+      Prop("featureSet") { (view: ExpoPaperkitView, config: FeatureSetConfig?) in
+        if let config = config {
+          view.featureSetConfig = config
+        }
+      }
+
+      Prop("canvasSize") { (view: ExpoPaperkitView, value: CanvasSizeConfig?) in
+        if let size = value {
+          view.canvasWidth = size.width
+          view.canvasHeight = size.height
+        }
+      }
+
+      Prop("minZoomScale") { (view: ExpoPaperkitView, value: Double?) in
+        view.minZoomScale = value ?? 0.25
+      }
+
+      Prop("maxZoomScale") { (view: ExpoPaperkitView, value: Double?) in
+        view.maxZoomScale = value ?? 4.0
+      }
+
+      Prop("toolPickerVisibility") { (view: ExpoPaperkitView, value: String?) in
+        view.toolPickerVisibilityProp = value ?? "visible"
+      }
+
+      Prop("isRulerActive") { (view: ExpoPaperkitView, value: Bool) in
+        view.isRulerActive = value
+      }
+
+      Prop("directTouchAutomaticallyDraws") { (view: ExpoPaperkitView, value: Bool) in
+        view.directTouchAutomaticallyDraws = value
+      }
+
+      Prop("paperBackgroundColor") { (view: ExpoPaperkitView, value: UIColor?) in
+        view.paperBackgroundColor = value
+      }
+
+      // MARK: - Events
+
+      Events(
+        "onMarkupChanged",
+        "onSelectionChanged",
+        "onDrawingBegan",
+        "onContentVisibleFrameChanged"
+      )
+
+      // MARK: - View Functions
+
+      AsyncFunction("save") { (view: ExpoPaperkitView) -> String in
+        if #available(iOS 26.0, macOS 26.0, *) {
+          return try await view.save()
+        }
+        throw PaperkitError.unsupportedPlatform
+      }
+
+      AsyncFunction("exportAsImage") { (view: ExpoPaperkitView, format: String, quality: Double) -> String in
+        if #available(iOS 26.0, macOS 26.0, *) {
+          return try await view.exportAsImage(format: format, quality: quality)
+        }
+        throw PaperkitError.unsupportedPlatform
+      }
+
+      AsyncFunction("clear") { (view: ExpoPaperkitView) in
+        if #available(iOS 26.0, macOS 26.0, *) {
+          view.clearMarkup()
+        }
+      }
+
+      AsyncFunction("undo") { (view: ExpoPaperkitView) in
+        if #available(iOS 26.0, macOS 26.0, *) {
+          view.performUndo()
+        }
+      }
+
+      AsyncFunction("redo") { (view: ExpoPaperkitView) in
+        if #available(iOS 26.0, macOS 26.0, *) {
+          view.performRedo()
+        }
+      }
+
+      AsyncFunction("showMarkupTools") { (view: ExpoPaperkitView) in
+        if #available(iOS 26.0, macOS 26.0, *) {
+          view.presentMarkupTools()
+        }
+      }
+
+      AsyncFunction("setToolPickerVisibility") { (view: ExpoPaperkitView, visibility: String) in
+        if #available(iOS 26.0, macOS 26.0, *) {
+          view.setToolPickerVisibility(visibility)
+        }
+      }
     }
   }
 }
