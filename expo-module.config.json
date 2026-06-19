@@ -1,9 +1,6 @@
 {
-  "platforms": ["apple", "android"],
+  "platforms": ["apple"],
   "apple": {
     "modules": ["ExpoPaperkitModule"]
-  },
-  "android": {
-    "modules": ["expo.modules.paperkit.ExpoPaperkitModule"]
   }
 }

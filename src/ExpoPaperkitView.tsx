@@ -1,10 +1,100 @@
 import { requireNativeView } from 'expo';
-import * as React from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-import { ExpoPaperkitViewProps } from './ExpoPaperkit.types';
+import type {
+  PaperMarkupRef,
+  PaperMarkupViewProps,
+  FeatureSetConfig,
+  ToolPickerVisibility,
+} from './ExpoPaperkit.types';
 
-const NativeView: React.ComponentType<ExpoPaperkitViewProps> = requireNativeView('ExpoPaperkit');
+const DEFAULT_FEATURE_SET: Required<FeatureSetConfig> = {
+  shapes: true,
+  textBoxes: true,
+  arrows: true,
+  signatures: true,
+  hdr: false,
+};
 
-export default function ExpoPaperkitView(props: ExpoPaperkitViewProps) {
-  return <NativeView {...props} />;
-}
+type NativeProps = Omit<
+  PaperMarkupViewProps,
+  'onMarkupChanged' | 'onSelectionChanged' | 'onContentVisibleFrameChanged' | 'featureSet'
+> & {
+  featureSet: Required<FeatureSetConfig>;
+  onMarkupChanged: () => void;
+  onSelectionChanged: (event: { nativeEvent: { hasSelection: boolean } }) => void;
+  onContentVisibleFrameChanged: (event: {
+    nativeEvent: { x: number; y: number; width: number; height: number };
+  }) => void;
+};
+
+const NativeView: React.ComponentType<NativeProps & { ref: React.Ref<any> }> =
+  requireNativeView('ExpoPaperkit');
+
+export const PaperMarkupView = forwardRef<PaperMarkupRef, PaperMarkupViewProps>(
+  (
+    {
+      featureSet,
+      onMarkupChanged,
+      onSelectionChanged,
+      onDrawingBegan,
+      onContentVisibleFrameChanged,
+      ...props
+    },
+    ref
+  ) => {
+    const nativeRef = useRef<any>(null);
+
+    useImperativeHandle(ref, () => ({
+      save: () => nativeRef.current?.save() ?? Promise.reject(new Error('View not mounted')),
+      exportAsImage: (format: 'png' | 'jpg' = 'png', quality = 0.9) =>
+        nativeRef.current?.exportAsImage(format, quality) ??
+        Promise.reject(new Error('View not mounted')),
+      clear: () => nativeRef.current?.clear(),
+      undo: () => nativeRef.current?.undo(),
+      redo: () => nativeRef.current?.redo(),
+      showMarkupTools: () => nativeRef.current?.showMarkupTools(),
+      setToolPickerVisibility: (visibility: ToolPickerVisibility) =>
+        nativeRef.current?.setToolPickerVisibility(visibility),
+    }));
+
+    const handleMarkupChanged = useCallback(() => {
+      onMarkupChanged?.();
+    }, [onMarkupChanged]);
+
+    const handleSelectionChanged = useCallback(
+      (e: { nativeEvent: { hasSelection: boolean } }) => {
+        onSelectionChanged?.(e.nativeEvent);
+      },
+      [onSelectionChanged]
+    );
+
+    const handleDrawingBegan = useCallback(() => {
+      onDrawingBegan?.();
+    }, [onDrawingBegan]);
+
+    const handleContentVisibleFrameChanged = useCallback(
+      (e: { nativeEvent: { x: number; y: number; width: number; height: number } }) => {
+        onContentVisibleFrameChanged?.(e.nativeEvent);
+      },
+      [onContentVisibleFrameChanged]
+    );
+
+    const resolvedFeatureSet: Required<FeatureSetConfig> = {
+      ...DEFAULT_FEATURE_SET,
+      ...featureSet,
+    };
+
+    return (
+      <NativeView
+        ref={nativeRef}
+        {...props}
+        featureSet={resolvedFeatureSet}
+        onMarkupChanged={handleMarkupChanged}
+        onSelectionChanged={handleSelectionChanged}
+        onDrawingBegan={handleDrawingBegan}
+        onContentVisibleFrameChanged={handleContentVisibleFrameChanged}
+      />
+    );
+  }
+);

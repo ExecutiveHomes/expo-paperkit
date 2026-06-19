@@ -1,7 +1,7 @@
 {
   "name": "expo-paperkit",
   "version": "0.1.0",
-  "description": "My new module",
+  "description": "Apple PaperKit markup experience for Expo/React Native — drawings, shapes, and annotations powered by PaperKit (iOS 26+) and PencilKit",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -16,8 +16,15 @@
   "keywords": [
     "react-native",
     "expo",
-    "expo-paperkit",
-    "ExpoPaperkit"
+    "paperkit",
+    "pencilkit",
+    "markup",
+    "annotation",
+    "drawing",
+    "apple-pencil",
+    "canvas",
+    "ios",
+    "macos"
   ],
   "repository": "https://github.com/hryhoriiK97/expo-paperkit",
   "bugs": {
@@ -28,7 +35,6 @@
   "homepage": "https://github.com/hryhoriiK97/expo-paperkit#readme",
   "dependencies": {},
   "devDependencies": {
-    "@expo/ui": "^56.0.10",
     "@babel/core": "^7.26.0",
     "@types/jest": "^29.2.1",
     "@types/react": "~19.1.1",
@@ -49,7 +55,6 @@
     ]
   },
   "peerDependencies": {
-    "@expo/ui": "*",
     "expo": "*",
     "react": "*",
     "react-native": "*"
