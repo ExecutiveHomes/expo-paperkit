@@ -9,7 +9,7 @@ if (process.platform !== 'darwin') {
   process.exit(1);
 }
 
-const projectPath = path.join(process.cwd(), 'example', 'ios');
+const projectPath = path.join(process.cwd(), 'apps', 'example', 'ios');
 const child = spawn('xed', [projectPath], { stdio: 'inherit' });
 
 child.once('error', (error) => {

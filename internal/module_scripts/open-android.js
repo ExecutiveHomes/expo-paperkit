@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-const projectPath = path.join(process.cwd(), 'example', 'android');
+const projectPath = path.join(process.cwd(), 'apps', 'example', 'android');
 
 function openApp(command, args, options = {}) {
   const detached = options.detached ?? true;
