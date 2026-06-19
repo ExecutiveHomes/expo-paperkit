@@ -27,13 +27,25 @@ extension ExpoPaperkitView {
   }
 
   func updateRuler() {
+#if !os(macOS)
     state.viewController?.isRulerActive = isRulerActive
+#endif
   }
 
   func applyPaperBackgroundColor() {
-    let color = paperBackgroundColor ?? .systemBackground
-    self.backgroundColor = color
+#if !os(macOS)
+    let color = paperBackgroundColor ?? UIColor.systemBackground
+    backgroundColor = color
     state.viewController?.view.backgroundColor = color
+#else
+    let color = paperBackgroundColor ?? NSColor.windowBackgroundColor
+    wantsLayer = true
+    layer?.backgroundColor = color.cgColor
+    if let paperView = state.viewController?.view {
+      paperView.wantsLayer = true
+      paperView.layer?.backgroundColor = color.cgColor
+    }
+#endif
   }
 }
 

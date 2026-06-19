@@ -4,6 +4,8 @@ import Foundation
 
 #if !os(macOS)
 import UIKit
+#else
+import AppKit
 #endif
 
 @available(iOS 26.0, macOS 26.0, *)
@@ -53,7 +55,11 @@ extension ExpoPaperkitView {
     }
 
     let renderBounds = markup.bounds
+#if !os(macOS)
     let scale = UIScreen.main.scale
+#else
+    let scale = NSScreen.main?.backingScaleFactor ?? 2.0
+#endif
     let pixelWidth = Int(renderBounds.width * scale)
     let pixelHeight = Int(renderBounds.height * scale)
     let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -73,7 +79,11 @@ extension ExpoPaperkitView {
     ctx.scaleBy(x: scale, y: scale)
     ctx.translateBy(x: -renderBounds.origin.x, y: -renderBounds.origin.y)
 
+#if !os(macOS)
     let options = RenderingOptions(traitCollection: UITraitCollection.current)
+#else
+    let options = RenderingOptions()
+#endif
     await markup.draw(in: ctx, frame: renderBounds, options: options)
 
     guard let cgImage = ctx.makeImage() else {

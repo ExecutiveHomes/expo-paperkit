@@ -254,7 +254,9 @@ extension ExpoPaperkitView {
     }
 
     applyPaperBackgroundColor()
+#if !os(macOS)
     vc.view.becomeFirstResponder()
+#endif
   }
 
   func buildFeatureSet() -> FeatureSet {

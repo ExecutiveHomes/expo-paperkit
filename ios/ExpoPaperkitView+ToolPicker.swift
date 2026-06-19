@@ -98,8 +98,18 @@ import AppKit
 @available(macOS 26.0, *)
 extension ExpoPaperkitView {
 
+  func setupToolPicker(for vc: PaperMarkupViewController) {}
+
+  func applyToolPickerVisibility() {}
+
+  func setToolPickerVisibility(_ visibility: String) {
+    toolPickerVisibilityProp = visibility
+  }
+
+  func restoreToolPickerAfterClear() {}
+
   func updatePencilKit() {
-    if showPencilKit {
+    if showPencilKit || showToolbar {
       if state.toolbarVC == nil { setupMarkupToolbar() }
     } else {
       removeMarkupToolbar()
