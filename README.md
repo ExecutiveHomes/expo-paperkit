@@ -1,3 +1,5 @@
+<img src="https://github.com/user-attachments/assets/1ce7f7dc-7ecc-4b32-8cfc-6635b54eadbb" alt="expo-paperkit" width="100%">
+
 # expo-paperkit
 
 Apple PaperKit markup experience for Expo/React Native — drawings, shapes, and annotations powered by PaperKit (iOS 26+, macOS 26+).
