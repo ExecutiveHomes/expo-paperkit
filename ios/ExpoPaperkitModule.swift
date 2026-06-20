@@ -69,6 +69,10 @@ public class ExpoPaperkitModule: Module {
         view.directTouchAutomaticallyDraws = value
       }
 
+      Prop("indirectPointerTouchMode") { (view: ExpoPaperkitView, value: String?) in
+        view.indirectPointerTouchMode = value ?? "drawing"
+      }
+
       Prop("paperBackgroundColor") { (view: ExpoPaperkitView, value: UIColor?) in
         view.paperBackgroundColor = value
       }

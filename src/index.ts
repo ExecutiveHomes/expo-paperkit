@@ -4,5 +4,6 @@ export type {
   PaperMarkupRef,
   FeatureSetConfig,
   ToolPickerVisibility,
+  TouchMode,
   CanvasSize,
 } from './ExpoPaperkit.types';

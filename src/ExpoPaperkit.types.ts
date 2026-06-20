@@ -10,6 +10,8 @@ export interface FeatureSetConfig {
 
 export type ToolPickerVisibility = 'visible' | 'hidden' | 'inactive';
 
+export type TouchMode = 'drawing' | 'selection';
+
 export interface PaperMarkupRef {
   save(): Promise<string>;
   exportAsImage(format: 'png' | 'jpg', quality?: number): Promise<string>;
@@ -43,6 +45,8 @@ export interface PaperMarkupViewProps {
   isRulerActive?: boolean;
   /** Let the system decide when direct touches draw vs. select. Defaults to false. */
   directTouchAutomaticallyDraws?: boolean;
+  /** Trackpad/mouse behavior on macOS: 'drawing' or 'selection'. Defaults to 'drawing'. */
+  indirectPointerTouchMode?: TouchMode;
   toolPickerVisibility?: ToolPickerVisibility;
   /** Background color of the native view. Accepts hex strings, named CSS colors, rgb()/rgba(), or 'transparent'. */
   paperBackgroundColor?: ColorValue;

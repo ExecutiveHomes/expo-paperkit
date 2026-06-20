@@ -69,6 +69,13 @@ class ExpoPaperkitView: ExpoView {
     }
   }
 
+  var indirectPointerTouchMode: String = "drawing" {
+    didSet {
+      guard isSetUp, indirectPointerTouchMode != oldValue else { return }
+      if #available(iOS 26.0, macOS 26.0, *) { updateIndirectPointerTouchMode() }
+    }
+  }
+
   var featureSetConfig = FeatureSetConfig()
   var enableShapes: Bool = true
   var enableTextBoxes: Bool = true
@@ -250,6 +257,9 @@ extension ExpoPaperkitView {
 #else
     if showToolbar { setupMarkupToolbar() }
 #endif
+
+    let pointerMode: PaperMarkupViewController.TouchMode = indirectPointerTouchMode == "selection" ? .selection : .drawing
+    vc.indirectPointerTouchMode = pointerMode
 
     if let uri = backgroundImageUri, !uri.isEmpty {
       updateBackgroundImage()

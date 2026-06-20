@@ -26,6 +26,11 @@ extension ExpoPaperkitView {
 #endif
   }
 
+  func updateIndirectPointerTouchMode() {
+    let mode: PaperMarkupViewController.TouchMode = indirectPointerTouchMode == "selection" ? .selection : .drawing
+    state.viewController?.indirectPointerTouchMode = mode
+  }
+
   func updateRuler() {
 #if !os(macOS)
     state.viewController?.isRulerActive = isRulerActive
