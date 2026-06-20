@@ -9,7 +9,6 @@ struct FeatureSetConfig: Record {
   @Field var shapes: Bool = true
   @Field var textBoxes: Bool = true
   @Field var arrows: Bool = true
-  @Field var signatures: Bool = true
   @Field var hdr: Bool = false
 }
 

@@ -80,7 +80,6 @@ class ExpoPaperkitView: ExpoView {
   var enableShapes: Bool = true
   var enableTextBoxes: Bool = true
   var enableArrows: Bool = true
-  var enableSignatures: Bool = true
   var enableHDR: Bool = false
 
   var canvasWidth: Double = 0
@@ -219,7 +218,6 @@ extension ExpoPaperkitView {
     enableShapes = config.shapes
     enableTextBoxes = config.textBoxes
     enableArrows = config.arrows
-    enableSignatures = config.signatures
     enableHDR = config.hdr
 
     let markup = PaperMarkup(bounds: currentCanvasBounds())
@@ -280,6 +278,14 @@ extension ExpoPaperkitView {
     }
     if !enableTextBoxes {
       fs.remove(.text)
+    }
+    if !enableArrows {
+      fs.shapes.remove(.arrowShape)
+      fs.shapes.remove(.line)
+      fs.lineMarkerPositions = []
+    }
+    if !enableHDR {
+      fs.colorMaximumLinearExposure = 1.0
     }
     return fs
   }

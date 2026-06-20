@@ -12,7 +12,6 @@ const DEFAULT_FEATURE_SET: Required<FeatureSetConfig> = {
   shapes: true,
   textBoxes: true,
   arrows: true,
-  signatures: true,
   hdr: false,
 };
 
@@ -89,7 +88,6 @@ export const PaperMarkupView = forwardRef<PaperMarkupRef, PaperMarkupViewProps>(
         featureSet?.shapes,
         featureSet?.textBoxes,
         featureSet?.arrows,
-        featureSet?.signatures,
         featureSet?.hdr,
       ]
     );
