@@ -42,7 +42,7 @@ android/keystores/debug.keystore
 # Cocoapods
 #
 apps/example/ios/Pods
-apps/expo-paperkit-macos-example/macos/Pods
+apps/macos-example/macos/Pods
 
 # Ruby
 apps/example/vendor/
