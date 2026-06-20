@@ -1,5 +1,5 @@
 import { requireNativeView } from 'expo';
-import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 
 import type {
   PaperMarkupRef,
@@ -80,10 +80,19 @@ export const PaperMarkupView = forwardRef<PaperMarkupRef, PaperMarkupViewProps>(
       [onContentVisibleFrameChanged]
     );
 
-    const resolvedFeatureSet: Required<FeatureSetConfig> = {
-      ...DEFAULT_FEATURE_SET,
-      ...featureSet,
-    };
+    const resolvedFeatureSet = useMemo<Required<FeatureSetConfig>>(
+      () => ({
+        ...DEFAULT_FEATURE_SET,
+        ...featureSet,
+      }),
+      [
+        featureSet?.shapes,
+        featureSet?.textBoxes,
+        featureSet?.arrows,
+        featureSet?.signatures,
+        featureSet?.hdr,
+      ]
+    );
 
     return (
       <NativeView

@@ -12,18 +12,20 @@ import AppKit
 extension ExpoPaperkitView {
 
   func loadInitialData(_ base64String: String) {
+    guard base64String != lastLoadedInitialData else { return }
     guard let data = Data(base64Encoded: base64String) else { return }
     do {
       let markup = try PaperMarkup(dataRepresentation: data)
       state.markup = markup
       state.viewController?.markup = markup
+      lastLoadedInitialData = base64String
     } catch {
       NSLog("[ExpoPaperkit] Failed to load initial data: %@", error.localizedDescription)
     }
   }
 
   func save() async throws -> String {
-    guard let markup = state.viewController?.markup ?? state.markup else {
+    guard let markup = state.viewController?.markup else {
       throw PaperkitError.noMarkupData
     }
     let data = try await markup.dataRepresentation()
@@ -35,6 +37,7 @@ extension ExpoPaperkitView {
     let markup = PaperMarkup(bounds: currentCanvasBounds())
     state.markup = markup
     state.viewController?.markup = markup
+    lastLoadedInitialData = nil
 
 #if !os(macOS)
     restoreToolPickerAfterClear()

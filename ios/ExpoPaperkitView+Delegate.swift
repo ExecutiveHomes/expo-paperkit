@@ -5,8 +5,12 @@ import PaperKit
 extension ExpoPaperkitView: @preconcurrency PaperMarkupViewController.Delegate {
 
   func paperMarkupViewControllerDidChangeMarkup(_ controller: PaperMarkupViewController) {
-    state.markup = controller.markup
-    onMarkupChanged()
+    markupChangedWorkItem?.cancel()
+    let workItem = DispatchWorkItem { [weak self] in
+      self?.onMarkupChanged()
+    }
+    markupChangedWorkItem = workItem
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: workItem)
   }
 
   func paperMarkupViewControllerDidChangeSelection(_ controller: PaperMarkupViewController) {

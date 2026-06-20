@@ -43,28 +43,28 @@ class ExpoPaperkitView: ExpoView {
 
   var readOnly: Bool = false {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, readOnly != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { updateReadOnly() }
     }
   }
 
   var showPencilKit: Bool = true {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, showPencilKit != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { updatePencilKit() }
     }
   }
 
   var allowFingerDrawing: Bool = false {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, allowFingerDrawing != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { updateFingerDrawing() }
     }
   }
 
   var directTouchAutomaticallyDraws: Bool = false {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, directTouchAutomaticallyDraws != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { updateDirectTouchAutomaticallyDraws() }
     }
   }
@@ -83,14 +83,14 @@ class ExpoPaperkitView: ExpoView {
 
   var toolPickerVisibilityProp: String = "visible" {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, toolPickerVisibilityProp != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { applyToolPickerVisibility() }
     }
   }
 
   var isRulerActive: Bool = false {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, isRulerActive != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { updateRuler() }
     }
   }
@@ -120,6 +120,8 @@ class ExpoPaperkitView: ExpoView {
 
   var isSetUp = false
   var _state: AnyObject?
+  var lastLoadedInitialData: String?
+  var markupChangedWorkItem: DispatchWorkItem?
 
   // MARK: - Init
 
