@@ -36,6 +36,10 @@ public class ExpoPaperkitModule: Module {
         view.backgroundImageUri = value
       }
 
+      Prop("backgroundImageContentMode") { (view: ExpoPaperkitView, value: String?) in
+        view.backgroundImageContentMode = value ?? "cover"
+      }
+
       Prop("featureSet") { (view: ExpoPaperkitView, config: FeatureSetConfig?) in
         if let config = config {
           view.featureSetConfig = config

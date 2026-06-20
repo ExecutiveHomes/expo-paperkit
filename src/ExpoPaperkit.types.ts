@@ -44,6 +44,14 @@ export type ToolPickerVisibility = 'visible' | 'hidden' | 'inactive';
  */
 export type TouchMode = 'drawing' | 'selection';
 
+/**
+ * Content mode for the background image.
+ * - `'cover'` — scales to fill the canvas, cropping edges if needed
+ * - `'contain'` — scales to fit within the canvas, preserving aspect ratio
+ * - `'stretch'` — stretches to fill the canvas exactly, ignoring aspect ratio
+ */
+export type BackgroundImageContentMode = 'cover' | 'contain' | 'stretch';
+
 export interface PaperMarkupRef {
   /**
    * Serialize the current markup to a base64-encoded string.
@@ -134,6 +142,12 @@ export interface PaperMarkupViewProps {
    * @platform ios, macos
    */
   backgroundImageUri?: string;
+  /**
+   * How the background image is scaled within the canvas.
+   * @default 'cover'
+   * @platform ios, macos
+   */
+  backgroundImageContentMode?: BackgroundImageContentMode;
   /**
    * Configure which PaperKit features are available on the canvas.
    * @default { shapes: true, textBoxes: true, arrows: true, hdr: false }

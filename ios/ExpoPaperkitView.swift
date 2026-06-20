@@ -115,6 +115,13 @@ class ExpoPaperkitView: ExpoView {
     }
   }
 
+  var backgroundImageContentMode: String = "cover" {
+    didSet {
+      guard isSetUp, backgroundImageContentMode != oldValue else { return }
+      if #available(iOS 26.0, macOS 26.0, *) { updateBackgroundImage() }
+    }
+  }
+
   // MARK: - Events
 
   let onMarkupChanged = EventDispatcher()

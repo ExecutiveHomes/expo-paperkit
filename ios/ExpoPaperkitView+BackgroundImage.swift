@@ -16,14 +16,34 @@ extension ExpoPaperkitView {
       vc.contentView = nil
       return
     }
+    let mode = backgroundImageContentMode
     loadImage(from: uri) { [weak vc] image in
       guard let image = image, let vc = vc else { return }
 #if !os(macOS)
       let imageView = UIImageView(image: image)
-      imageView.contentMode = .scaleAspectFit
+      switch mode {
+      case "contain":
+        imageView.contentMode = .scaleAspectFit
+      case "stretch":
+        imageView.contentMode = .scaleToFill
+      default:
+        imageView.contentMode = .scaleAspectFill
+      }
+      imageView.clipsToBounds = true
 #else
       let imageView = NSImageView(image: image)
-      imageView.imageScaling = .scaleProportionallyUpOrDown
+      switch mode {
+      case "contain":
+        imageView.imageScaling = .scaleProportionallyUpOrDown
+      case "stretch":
+        imageView.imageScaling = .scaleAxesIndependently
+      default:
+        imageView.imageScaling = .scaleProportionallyUpOrDown
+        // AspectFill not natively supported by NSImageView; use layer-based approach
+        imageView.wantsLayer = true
+        imageView.layer?.contentsGravity = .resizeAspectFill
+        imageView.layer?.contents = image
+      }
 #endif
       vc.contentView = imageView
     }

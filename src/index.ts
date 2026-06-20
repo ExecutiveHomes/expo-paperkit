@@ -5,5 +5,6 @@ export type {
   FeatureSetConfig,
   ToolPickerVisibility,
   TouchMode,
+  BackgroundImageContentMode,
   CanvasSize,
 } from './ExpoPaperkit.types';
