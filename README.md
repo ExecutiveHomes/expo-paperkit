@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/e65f8f67-32ab-43bd-850c-5bcd45dd7aa4" alt="expo-paperkit" width="100%" height="300">
+<img src="https://github.com/user-attachments/assets/e65f8f67-32ab-43bd-850c-5bcd45dd7aa4" alt="expo-paperkit" style="width: 100%; height: auto; max-width: 100%;">
 
 # expo-paperkit
 
