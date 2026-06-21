@@ -13,11 +13,15 @@ extension ExpoPaperkitView {
   func updateBackgroundImage() {
     guard let vc = state.viewController else { return }
     guard let uri = backgroundImageUri, !uri.isEmpty else {
+      backgroundImageLoadId = nil
       vc.contentView = nil
       return
     }
+    let loadId = UUID()
+    backgroundImageLoadId = loadId
     let mode = backgroundImageContentMode
-    loadImage(from: uri) { [weak vc] image in
+    loadImage(from: uri) { [weak self, weak vc] image in
+      guard let self = self, self.backgroundImageLoadId == loadId else { return }
       guard let image = image, let vc = vc else { return }
 #if !os(macOS)
       let imageView = UIImageView(image: image)
@@ -39,7 +43,6 @@ extension ExpoPaperkitView {
         imageView.imageScaling = .scaleAxesIndependently
       default:
         imageView.imageScaling = .scaleProportionallyUpOrDown
-        // AspectFill not natively supported by NSImageView; use layer-based approach
         imageView.wantsLayer = true
         imageView.layer?.contentsGravity = .resizeAspectFill
         imageView.layer?.contents = image

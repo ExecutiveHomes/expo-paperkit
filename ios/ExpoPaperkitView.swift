@@ -103,14 +103,14 @@ class ExpoPaperkitView: ExpoView {
 
   var canvasBackgroundColor: UIColor? {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, canvasBackgroundColor != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { applyCanvasBackgroundColor() }
     }
   }
 
   var backgroundImageUri: String? {
     didSet {
-      guard isSetUp else { return }
+      guard isSetUp, backgroundImageUri != oldValue else { return }
       if #available(iOS 26.0, macOS 26.0, *) { updateBackgroundImage() }
     }
   }
@@ -135,6 +135,7 @@ class ExpoPaperkitView: ExpoView {
   var _state: AnyObject?
   var lastLoadedInitialData: String?
   var markupChangedWorkItem: DispatchWorkItem?
+  var backgroundImageLoadId: UUID?
 
   // MARK: - Init
 
