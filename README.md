@@ -30,7 +30,11 @@ npm install expo-paperkit
 yarn add expo-paperkit
 ```
 
-Run `npx expo prebuild` to generate the native project, then build with Xcode.
+Run `npx expo prebuild` to generate the native project, then build with `npx expo run:ios` or open the `.xcworkspace` in Xcode.
+
+> **Note:** This library requires native code and will not work in Expo Go.
+
+> **macOS:** For macOS support, use [expo-desktop](https://github.com/shirakaba/expo-desktop) to set up your project. See the `apps/macos-example/` directory for a working example.
 
 ## Quick Start
 
