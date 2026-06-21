@@ -101,10 +101,10 @@ class ExpoPaperkitView: ExpoView {
     }
   }
 
-  var paperBackgroundColor: UIColor? {
+  var canvasBackgroundColor: UIColor? {
     didSet {
       guard isSetUp else { return }
-      if #available(iOS 26.0, macOS 26.0, *) { applyPaperBackgroundColor() }
+      if #available(iOS 26.0, macOS 26.0, *) { applyCanvasBackgroundColor() }
     }
   }
 
@@ -270,7 +270,7 @@ extension ExpoPaperkitView {
       updateBackgroundImage()
     }
 
-    applyPaperBackgroundColor()
+    applyCanvasBackgroundColor()
 #if !os(macOS)
     vc.view.becomeFirstResponder()
 #endif

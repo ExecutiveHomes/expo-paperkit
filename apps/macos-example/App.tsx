@@ -129,7 +129,7 @@ export default function App() {
         showToolbar={isMacOS}
         showPencilKit={!isMacOS}
         initialData={savedData ?? undefined}
-        paperBackgroundColor="#ffffff"
+        canvasBackgroundColor="#ffffff"
         allowFingerDrawing
         featureSet={{
           shapes: true,

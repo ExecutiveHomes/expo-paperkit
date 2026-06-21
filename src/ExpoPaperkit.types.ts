@@ -203,7 +203,7 @@ export interface PaperMarkupViewProps {
    * Accepts hex strings, named CSS colors, `rgb()`/`rgba()`, or `'transparent'`.
    * @platform ios, macos
    */
-  paperBackgroundColor?: ColorValue;
+  canvasBackgroundColor?: ColorValue;
   /**
    * Fired when the markup content changes (stroke completed, element added/removed/modified).
    * @platform ios, macos

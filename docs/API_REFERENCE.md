@@ -206,7 +206,7 @@ Control the visibility state of the tool picker.
 
 ---
 
-### `paperBackgroundColor`
+### `canvasBackgroundColor`
 
 Background color of the native canvas view.
 
@@ -220,7 +220,7 @@ Accepts hex strings, named CSS colors, `rgb()`/`rgba()`, or `'transparent'`.
 
 ```tsx
 <PaperMarkupView
-  paperBackgroundColor="#ffffff"
+  canvasBackgroundColor="#ffffff"
 />
 ```
 

@@ -102,7 +102,7 @@ export default function App() {
             style={styles.canvas}
             showPencilKit
             initialData={savedData ?? undefined}
-            paperBackgroundColor="#ffffff"
+            canvasBackgroundColor="#ffffff"
             allowFingerDrawing={Platform.OS !== 'ios'}
             featureSet={{
               shapes: true,

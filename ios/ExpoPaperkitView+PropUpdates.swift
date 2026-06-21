@@ -37,14 +37,14 @@ extension ExpoPaperkitView {
 #endif
   }
 
-  func applyPaperBackgroundColor() {
+  func applyCanvasBackgroundColor() {
 #if !os(macOS)
-    let color = paperBackgroundColor ?? UIColor.systemBackground
+    let color = canvasBackgroundColor ?? UIColor.systemBackground
     guard backgroundColor != color else { return }
     backgroundColor = color
     state.viewController?.view.backgroundColor = color
 #else
-    let color = paperBackgroundColor ?? NSColor.windowBackgroundColor
+    let color = canvasBackgroundColor ?? NSColor.windowBackgroundColor
     guard layer?.backgroundColor != color.cgColor else { return }
     wantsLayer = true
     layer?.backgroundColor = color.cgColor

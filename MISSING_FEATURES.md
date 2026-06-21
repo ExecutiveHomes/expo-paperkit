@@ -152,7 +152,7 @@ interface MarkupAdornment {
 
 | Prop / Method | Native API | Description |
 |---|---|---|
-| `paperBackgroundColor` (on model) | `markup.backgroundColor` | Background color of the paper itself (separate from VC view) |
+| `canvasBackgroundColor` (on model) | `markup.backgroundColor` | Background color of the paper itself (separate from VC view) |
 | `getContentsRenderFrame()` | `markup.contentsRenderFrame` | Tight bounding frame of all rendered content |
 | `getSubelements()` | `markup.subelements` | Read back the list of markup elements |
 
