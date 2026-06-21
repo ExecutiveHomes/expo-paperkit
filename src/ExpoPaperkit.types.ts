@@ -71,29 +71,29 @@ export interface PaperMarkupRef {
    * Remove all markup content from the canvas.
    * @platform ios, macos
    */
-  clear(): void;
+  clear(): Promise<void>;
   /**
    * Undo the last action.
    * @platform ios, macos
    */
-  undo(): void;
+  undo(): Promise<void>;
   /**
    * Redo the last undone action.
    * @platform ios, macos
    */
-  redo(): void;
+  redo(): Promise<void>;
   /**
    * Present the markup insertion tools UI.
    * On iOS, shows a popover with shape/text/line options.
    * On macOS, ensures the toolbar is visible.
    * @platform ios, macos
    */
-  showMarkupTools(): void;
+  showMarkupTools(): Promise<void>;
   /**
    * Programmatically show or hide the tool picker at runtime.
    * @platform ios
    */
-  setToolPickerVisibility(visibility: ToolPickerVisibility): void;
+  setToolPickerVisibility(visibility: ToolPickerVisibility): Promise<void>;
 }
 
 export interface CanvasSize {

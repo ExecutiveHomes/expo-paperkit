@@ -102,11 +102,34 @@ const [savedData, setSavedData] = useState<string | null>(null);
 
 ### `backgroundImageUri`
 
-URI for a background image displayed behind the markup content.
+URI for a background image displayed behind the markup content. Supports `http://`, `https://`, and local `file://` paths.
 
 | Type | Default Value | Platform |
 | -------- | ------------- | -------- |
 | `string` | — | Both |
+
+---
+
+### `backgroundImageContentMode`
+
+How the background image is scaled within the canvas.
+
+| Type | Default Value | Platform |
+| ----------------------------------------- | ------------- | -------- |
+| `'cover' \| 'contain' \| 'stretch'` | `'cover'` | Both |
+
+- `'cover'` — scales to fill the canvas, cropping edges if needed
+- `'contain'` — scales to fit within the canvas, preserving aspect ratio
+- `'stretch'` — stretches to fill the canvas exactly, ignoring aspect ratio
+
+**Example:**
+
+```tsx
+<PaperMarkupView
+  backgroundImageUri="https://example.com/photo.jpg"
+  backgroundImageContentMode="contain"
+/>
+```
 
 ---
 
@@ -343,7 +366,7 @@ Remove all markup content from the canvas.
 
 | Returns |
 | ------- |
-| `void` |
+| `Promise<void>` |
 
 ---
 
@@ -353,7 +376,7 @@ Undo the last action.
 
 | Returns |
 | ------- |
-| `void` |
+| `Promise<void>` |
 
 ---
 
@@ -363,7 +386,7 @@ Redo the last undone action.
 
 | Returns |
 | ------- |
-| `void` |
+| `Promise<void>` |
 
 ---
 
@@ -373,7 +396,7 @@ Present the markup insertion tools UI. On iOS, this shows a popover with shape/t
 
 | Returns |
 | ------- |
-| `void` |
+| `Promise<void>` |
 
 ---
 
@@ -387,7 +410,7 @@ Programmatically show or hide the tool picker at runtime.
 
 | Returns |
 | ------- |
-| `void` |
+| `Promise<void>` |
 
 **Example:**
 
@@ -405,11 +428,11 @@ markupRef.current?.setToolPickerVisibility('hidden');
 interface PaperMarkupRef {
   save(): Promise<string>;
   exportAsImage(format: 'png' | 'jpg', quality?: number): Promise<string>;
-  clear(): void;
-  undo(): void;
-  redo(): void;
-  showMarkupTools(): void;
-  setToolPickerVisibility(visibility: ToolPickerVisibility): void;
+  clear(): Promise<void>;
+  undo(): Promise<void>;
+  redo(): Promise<void>;
+  showMarkupTools(): Promise<void>;
+  setToolPickerVisibility(visibility: ToolPickerVisibility): Promise<void>;
 }
 ```
 
@@ -434,6 +457,12 @@ type ToolPickerVisibility = 'visible' | 'hidden' | 'inactive';
 
 ```typescript
 type TouchMode = 'drawing' | 'selection';
+```
+
+### `BackgroundImageContentMode`
+
+```typescript
+type BackgroundImageContentMode = 'cover' | 'contain' | 'stretch';
 ```
 
 ### `CanvasSize`
