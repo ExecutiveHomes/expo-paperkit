@@ -62,6 +62,7 @@ extension ExpoPaperkitView {
 
   func restoreToolPickerAfterClear() {
     guard showPencilKit, let vc = state.viewController, let picker = state.toolPicker else { return }
+    picker.addObserver(vc)
     picker.setVisible(true, forFirstResponder: vc.view)
     vc.pencilKitResponderState.activeToolPicker = picker
     vc.pencilKitResponderState.toolPickerVisibility = .visible
