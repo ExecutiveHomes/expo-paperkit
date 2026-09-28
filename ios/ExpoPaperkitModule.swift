@@ -77,6 +77,10 @@ public class ExpoPaperkitModule: Module {
         view.indirectPointerTouchMode = value ?? "drawing"
       }
 
+      Prop("toolItems") { (view: ExpoPaperkitView, value: [ToolItemConfig]?) in
+        view.toolItemConfigs = value ?? []
+      }
+
       Prop("canvasBackgroundColor") { (view: ExpoPaperkitView, value: UIColor?) in
         view.canvasBackgroundColor = value
       }

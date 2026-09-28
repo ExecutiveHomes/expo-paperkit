@@ -101,6 +101,15 @@ class ExpoPaperkitView: ExpoView {
     }
   }
 
+  var toolItemConfigs: [ToolItemConfig] = [] {
+    didSet {
+      guard isSetUp else { return }
+#if !os(macOS)
+      if #available(iOS 26.0, *) { rebuildToolPicker() }
+#endif
+    }
+  }
+
   var canvasBackgroundColor: UIColor? {
     didSet {
       guard isSetUp, canvasBackgroundColor != oldValue else { return }

@@ -31,6 +31,20 @@ export type PaperKitInk =
   | 'crayon'
   | 'reed';
 
+export type PaperKitToolItemType = 'inking' | 'eraser' | 'lasso';
+
+export type PaperKitEraserType = 'vector' | 'bitmap' | 'fixedWidthBitmap';
+
+export interface ToolItemConfig {
+  type: PaperKitToolItemType;
+  inkType?: PaperKitInk;
+  color?: ColorValue;
+  width?: number;
+  allowsColorSelection?: boolean;
+  eraserType?: PaperKitEraserType;
+  identifier?: string;
+}
+
 export type PaperKitLineMarkerPosition = 'plain' | 'single' | 'double' | 'all';
 
 export interface FeatureSetConfig {
@@ -209,6 +223,7 @@ export interface PaperMarkupViewProps {
    * @platform ios, macos
    */
   maxZoomScale?: number;
+  toolItems?: ToolItemConfig[];
   /**
    * Show the ruler overlay on the canvas.
    * @default false

@@ -69,8 +69,26 @@ extension ExpoPaperkitView {
     vc.view.becomeFirstResponder()
   }
 
+  func rebuildToolPicker() {
+    guard showPencilKit, let vc = state.viewController else { return }
+
+    if let existing = state.toolPicker {
+      existing.setVisible(false, forFirstResponder: vc.view)
+      existing.removeObserver(vc)
+    }
+
+    let picker = createToolPicker()
+    state.toolPicker = picker
+    picker.addObserver(vc)
+    let visible = toolPickerVisibilityProp != "hidden"
+    picker.setVisible(visible, forFirstResponder: vc.view)
+    vc.pencilKitResponderState.activeToolPicker = picker
+    vc.pencilKitResponderState.toolPickerVisibility = visible ? .visible : .hidden
+    if visible { vc.view.becomeFirstResponder() }
+  }
+
   private func createToolPicker() -> PKToolPicker {
-    let picker = PKToolPicker()
+    let picker = makeToolPicker()
     if #available(iOS 18.0, *) {
       picker.accessoryItem = UIBarButtonItem(
         barButtonSystemItem: .add,
@@ -79,6 +97,69 @@ extension ExpoPaperkitView {
       )
     }
     return picker
+  }
+
+  private func makeToolPicker() -> PKToolPicker {
+    guard !toolItemConfigs.isEmpty else {
+      return PKToolPicker()
+    }
+
+    let items = toolItemConfigs.compactMap(Self.toolItem(from:))
+
+    return items.isEmpty ? PKToolPicker() : PKToolPicker(toolItems: items)
+  }
+
+  private static func toolItem(from config: ToolItemConfig) -> PKToolPickerItem? {
+    switch config.type {
+    case "eraser":
+      let eraserType = self.eraserType(named: config.eraserType) ?? .vector
+
+      guard let width = config.width else {
+        return PKToolPickerEraserItem(type: eraserType)
+      }
+
+      return PKToolPickerEraserItem(type: eraserType, width: CGFloat(width))
+
+    case "lasso":
+      return PKToolPickerLassoItem()
+
+    default:
+      guard let inkType = self.inkType(named: config.inkType) else { return nil }
+
+      let item = PKToolPickerInkingItem(
+        type: inkType,
+        color: config.color,
+        width: config.width.map { CGFloat($0) },
+        identifier: config.identifier
+      )
+
+      item.allowsColorSelection = config.allowsColorSelection ?? true
+
+      return item
+    }
+  }
+
+  private static func inkType(named name: String?) -> PKInkingTool.InkType? {
+    switch name {
+    case "pen", nil: return .pen
+    case "pencil": return .pencil
+    case "marker": return .marker
+    case "monoline": return .monoline
+    case "fountainPen": return .fountainPen
+    case "watercolor": return .watercolor
+    case "crayon": return .crayon
+    case "reed": return .reed
+    default: return nil
+    }
+  }
+
+  private static func eraserType(named name: String?) -> PKEraserTool.EraserType? {
+    switch name {
+    case "bitmap": return .bitmap
+    case "fixedWidthBitmap": return .fixedWidthBitmap
+    case "vector", nil: return .vector
+    default: return nil
+    }
   }
 
   @objc private func handleToolPickerAccessory(_ sender: Any?) {

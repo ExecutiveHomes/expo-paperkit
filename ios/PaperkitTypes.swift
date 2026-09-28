@@ -18,6 +18,16 @@ struct FeatureSetConfig: Record {
   @Field var colorMaximumLinearExposure: Double? = nil
 }
 
+struct ToolItemConfig: Record {
+  @Field var type: String = "inking"
+  @Field var inkType: String? = nil
+  @Field var color: UIColor? = nil
+  @Field var width: Double? = nil
+  @Field var allowsColorSelection: Bool? = nil
+  @Field var eraserType: String? = nil
+  @Field var identifier: String? = nil
+}
+
 enum PaperkitError: Error, LocalizedError {
   case unsupportedPlatform
   case noMarkupData
