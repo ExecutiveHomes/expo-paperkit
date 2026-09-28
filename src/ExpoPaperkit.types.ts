@@ -1,5 +1,38 @@
 import type { ColorValue, StyleProp, ViewStyle } from 'react-native';
 
+export type PaperKitFeature =
+  | 'images'
+  | 'stickers'
+  | 'loupes'
+  | 'links'
+  | 'shapeFills'
+  | 'shapeStrokes'
+  | 'shapeOpacity'
+  | 'text'
+  | 'drawing';
+
+export type PaperKitShape =
+  | 'rectangle'
+  | 'ellipse'
+  | 'line'
+  | 'chatBubble'
+  | 'roundedRectangle'
+  | 'regularPolygon'
+  | 'star'
+  | 'arrowShape';
+
+export type PaperKitInk =
+  | 'pen'
+  | 'pencil'
+  | 'marker'
+  | 'monoline'
+  | 'fountainPen'
+  | 'watercolor'
+  | 'crayon'
+  | 'reed';
+
+export type PaperKitLineMarkerPosition = 'plain' | 'single' | 'double' | 'all';
+
 export interface FeatureSetConfig {
   /**
    * Enable shape tools (rectangle, ellipse, star, rounded rectangle, etc.).
@@ -27,6 +60,11 @@ export interface FeatureSetConfig {
    * @platform ios, macos
    */
   hdr?: boolean;
+  features?: PaperKitFeature[];
+  shapeTypes?: PaperKitShape[];
+  inks?: PaperKitInk[];
+  lineMarkerPositions?: PaperKitLineMarkerPosition[];
+  colorMaximumLinearExposure?: number;
 }
 
 /**

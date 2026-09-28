@@ -276,27 +276,6 @@ extension ExpoPaperkitView {
     vc.view.becomeFirstResponder()
 #endif
   }
-
-  func buildFeatureSet() -> FeatureSet {
-    var fs: FeatureSet = .latest
-    fs.insert(.stickers)
-    if !enableShapes {
-      fs.remove(.shapeStrokes)
-      fs.remove(.shapeFills)
-    }
-    if !enableTextBoxes {
-      fs.remove(.text)
-    }
-    if !enableArrows {
-      fs.shapes.remove(.arrowShape)
-      fs.shapes.remove(.line)
-      fs.lineMarkerPositions = []
-    }
-    if !enableHDR {
-      fs.colorMaximumLinearExposure = 1.0
-    }
-    return fs
-  }
 }
 
 #endif

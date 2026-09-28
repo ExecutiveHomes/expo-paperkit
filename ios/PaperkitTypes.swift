@@ -10,6 +10,12 @@ struct FeatureSetConfig: Record {
   @Field var textBoxes: Bool = true
   @Field var arrows: Bool = true
   @Field var hdr: Bool = false
+
+  @Field var features: [String]? = nil
+  @Field var shapeTypes: [String]? = nil
+  @Field var inks: [String]? = nil
+  @Field var lineMarkerPositions: [String]? = nil
+  @Field var colorMaximumLinearExposure: Double? = nil
 }
 
 enum PaperkitError: Error, LocalizedError {

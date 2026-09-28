@@ -8,7 +8,15 @@ import type {
   ToolPickerVisibility,
 } from './ExpoPaperkit.types';
 
-const DEFAULT_FEATURE_SET: Required<FeatureSetConfig> = {
+type ResolvedFeatureSetConfig = Required<
+  Pick<FeatureSetConfig, 'shapes' | 'textBoxes' | 'arrows' | 'hdr'>
+> &
+  Pick<
+    FeatureSetConfig,
+    'features' | 'shapeTypes' | 'inks' | 'lineMarkerPositions' | 'colorMaximumLinearExposure'
+  >;
+
+const DEFAULT_FEATURE_SET: ResolvedFeatureSetConfig = {
   shapes: true,
   textBoxes: true,
   arrows: true,
@@ -19,7 +27,7 @@ type NativeProps = Omit<
   PaperMarkupViewProps,
   'onMarkupChanged' | 'onSelectionChanged' | 'onContentVisibleFrameChanged' | 'featureSet'
 > & {
-  featureSet: Required<FeatureSetConfig>;
+  featureSet: ResolvedFeatureSetConfig;
   onMarkupChanged: () => void;
   onSelectionChanged: (event: { nativeEvent: { hasSelection: boolean } }) => void;
   onContentVisibleFrameChanged: (event: {
@@ -79,17 +87,14 @@ export const PaperMarkupView = forwardRef<PaperMarkupRef, PaperMarkupViewProps>(
       [onContentVisibleFrameChanged]
     );
 
-    const resolvedFeatureSet = useMemo<Required<FeatureSetConfig>>(
+    const featureSetKey = JSON.stringify(featureSet ?? null);
+
+    const resolvedFeatureSet = useMemo<ResolvedFeatureSetConfig>(
       () => ({
         ...DEFAULT_FEATURE_SET,
         ...featureSet,
       }),
-      [
-        featureSet?.shapes,
-        featureSet?.textBoxes,
-        featureSet?.arrows,
-        featureSet?.hdr,
-      ]
+      [featureSetKey]
     );
 
     return (
