@@ -17,7 +17,15 @@ extension ExpoPaperkitView {
     do {
       let markup = try PaperMarkup(dataRepresentation: data)
       state.markup = markup
-      state.viewController?.markup = markup
+
+      guard let viewController = state.viewController else {
+        pendingInitialData = base64String
+
+        return
+      }
+
+      viewController.markup = markup
+      pendingInitialData = nil
       lastLoadedInitialData = base64String
     } catch {
       NSLog("[ExpoPaperkit] Failed to load initial data: %@", error.localizedDescription)
@@ -38,6 +46,7 @@ extension ExpoPaperkitView {
     state.markup = markup
     state.viewController?.markup = markup
     lastLoadedInitialData = nil
+    pendingInitialData = nil
 
 #if !os(macOS)
     restoreToolPickerAfterClear()

@@ -134,6 +134,7 @@ class ExpoPaperkitView: ExpoView {
   var isSetUp = false
   var _state: AnyObject?
   var lastLoadedInitialData: String?
+  var pendingInitialData: String?
   var markupChangedWorkItem: DispatchWorkItem?
   var backgroundImageLoadId: UUID?
 
@@ -228,7 +229,7 @@ extension ExpoPaperkitView {
     enableArrows = config.arrows
     enableHDR = config.hdr
 
-    let markup = PaperMarkup(bounds: currentCanvasBounds())
+    let markup = state.markup ?? PaperMarkup(bounds: currentCanvasBounds())
     state.markup = markup
 
     let featureSet = buildFeatureSet()
@@ -272,6 +273,12 @@ extension ExpoPaperkitView {
     }
 
     applyCanvasBackgroundColor()
+
+    if let pending = pendingInitialData {
+      pendingInitialData = nil
+      loadInitialData(pending)
+    }
+
 #if !os(macOS)
     vc.view.becomeFirstResponder()
 #endif
